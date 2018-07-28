@@ -21,11 +21,11 @@ class Male():
         self.update_zippers()
 
     def add_child(self):
-        children += 1
+        self.children += 1
         self.days_to_copulate = MALE_COPULATION_GAP
 
     def can_copulate(self):
-        return (not self.zipped) and (self.days_to_copulate == 0)
+        return (not self.zippers) and (self.days_to_copulate == 0)
 
     def update_age(self):
         self.age += 1
@@ -46,11 +46,11 @@ class Female():
         self.update_legs()
 
     def add_child(self):
-        children += 1
+        self.children += 1
         self.days_to_copulate = FEMALE_COPULATION_GAP
 
     def can_copulate(self):
-        return (not self.legs_closed) and (self.days_to_copulate == 0)
+        return (not self.legs) and (self.days_to_copulate == 0)
 
     def update_age(self):
         self.age += 1
@@ -93,18 +93,19 @@ class Population():
         return len(self.men) + len(self.women)
 
     def able_men_count(self):
-        return sum([1 for man in self.population.men if man.can_copulate()])
+        return sum([1 for man in self.men if man.can_copulate()])
 
     def able_women_count(self):
-       return sum([1 for woman in self.population.women if woman.can_copulate()])
+        return sum([1 for woman in self.women if woman.can_copulate()])
 
 
 class Simulator():
 
-    def __init__(self, days=10000000, men=50, women=50):
+    def __init__(self, days=10000, men=1, women=1):
         self.days=days
         self.population = Population(men, women)
         self.men_count = []
+        self.women_count = []
         self.able_men_count = []
         self.able_women_count = []
 
@@ -139,10 +140,14 @@ class Simulator():
             self.women_count.append(len(self.population.women))
             self.able_men_count.append(self.population.able_men_count())
             self.able_women_count.append(self.population.able_women_count())
+            print(len(self.population.men),',',len(self.population.women))
             self.copulate_all()
             self.next_day()
             
 
+if __name__ == '__main__':
+    sim = Simulator()
+    sim.simulate()
 
 
 
